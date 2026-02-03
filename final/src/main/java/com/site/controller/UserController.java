@@ -46,12 +46,12 @@ public class UserController {
         try {
             //1. 회원가입 비지니스 로직 시도(예외 발생 가능)
             userService.signUp(user);
-            //2. 로그인 성공시 msg를 loginForm 화면에 전달
+            //2. 회원 가입 성공시 msg를 loginForm 화면에 전달
             rttr.addFlashAttribute("msg","회원가입이 완료되었습니다.");
             //3. 회원 가입 성공 시, 로그인 페이지로 이동
             return "redirect:/users/login";
         }catch (IllegalArgumentException e){
-            //4. 로그인 실패(중복 아이디인 경우) 서비스에서 발생시킨 에러 메시지 화면에 전달
+            //4. 회원 가입 실패(중복 아이디인 경우) 서비스에서 발생시킨 에러 메시지 화면에 전달
             rttr.addFlashAttribute("msg",e.getMessage());
             //5. 회원 가입 폼으로 이동
             return "redirect:/users/signup";
@@ -76,8 +76,16 @@ public class UserController {
         }else {
             //로그인 실패 : 에러 메시지 전달
             // *미션 : 아이디와 비밀번호 중 무엇을 틀렸는지 알려주기
-            model.addAttribute("error","아이디 또는 비밀번호가 일치하지 않습니다.");
-            return "users/loginForm";
+            if(id == null){
+                model.addAttribute("error","아이디를 입력해주세요.");
+                return "users/loginForm";
+            }else {
+                model.addAttribute("error","비밀번호를 입력해주세요.");
+                return "users/loginForm";
+            }
+
+            //model.addAttribute("error","아이디 또는 비밀번호가 일치하지 않습니다.");
+            //return "users/loginForm";
         }
     }
 
@@ -106,5 +114,29 @@ public class UserController {
         return "redirect:/";
             }
 
+
+    @GetMapping("/edit")
+    public String editForm(){
+        //현재 로그인 상태여부 판별
+        return "users/editInformation";
+        }
+
+    @PostMapping("/edit")
+    public String edit(User user, HttpServletRequest request, RedirectAttributes rttr){
+        HttpSession session = request.getSession(false);
+        if(session != null){
+            User loginUser = (User) session.getAttribute("loginUser");
+            if(loginUser != null){
+                user.setId(loginUser.getId());
+                userService.modify(user);
+                System.out.println(session.getAttribute("loginUser"));
+                session.setAttribute("loginUser",user);
+                System.out.println(session.getAttribute("loginUser"));
+                rttr.addFlashAttribute("msg","회원정보가 수정되었습니다.");
+                return "redirect:/";
+            }
+        }
+        return "redirect:/";
+        }
 
 }

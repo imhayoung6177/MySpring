@@ -26,6 +26,9 @@
           <span class="navbar-text" th:text="|${session.loginUser.name}님 환영합니다.|"></span>
         </li>
         <li class="nav-item" th:if="${session.loginUser != null}">
+          <a class="nav-link" th:href="@{users/edit}">정보수정</a>
+        </li>
+        <li class="nav-item" th:if="${session.loginUser != null}">
           <a class="nav-link" th:href="@{users/logout}">로그아웃</a>
         </li>
         <li class="nav-item" th:if="${session.loginUser != null}">
