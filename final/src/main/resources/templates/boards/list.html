@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container">
+            <div class="row mb-3">
+                <!-- 검색 폼 -->
+                <div class="col-md-8">
+                    <form th:action="@{/boards}" th:method="get" class="d-flex">
+                        <select name="searchType" class="form-select me-2" th:value="${searchType}" >
+                            <option value="title" th:selected="${searchType == 'title'}">글제목</option>
+                            <option value="content" th:selected="${searchType == 'content'}" >글내용</option>
+                            <option value="writer" th:selected="${searchType == 'writer'}">작성자</option>
+                        </select>
+                        <input th:value="${keyword}" type="text" name="keyword" class="form-control me-2" placeholder="검색어를 입력하세요">
+                        <button type="submit" class="btn btn-primary">검색</button>
+                    </form>
+                </div>
+                <!--글등록 버튼 -->
+                <div class="col-md-4 text-end">
+                    <a th:href="@{/boards/writer}" class="btn btn-primary">글 등록</a>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>글번호</td>
+                    <td>글제목</td>
+                    <td>작성자</td>
+                    <td>작성일</td>
+                </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${boards}">
+                <td th:text="${board.bno}"></td>
+                <td><a th:href="@{/boards/{bno}(bno=${board.bno})}" th:text="${board.title}"></a></td>
+                <td th:text="${board.writer}"></td>
+                <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

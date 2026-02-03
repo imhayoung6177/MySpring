@@ -10,7 +10,7 @@ public class Board {
     private String title;
     private String content;
     private String writer;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 
 }
