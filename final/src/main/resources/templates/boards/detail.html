@@ -22,10 +22,10 @@
                             <td th:text="${board.content}"></td>
                         </tr>
                         <tr>
-                            <td th:text="${#temporals.format(board.updateAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         </tr>
                     </table>
-                    <form th:action="@{/boards/delete}" method="post">
+                    <form th:action="@{/boards/{bno}/delete(bno=${board.bno})}" method="post">
                     <div th:if="${session.loginUser.id == board.writer}">
                         <input type="hidden" id="bno" th:value="${board.bno}">
                         <button type="submit"> 삭제하기 </button>

@@ -41,12 +41,22 @@ public class BoardController {
 
     }
 
+    // 글 작성 페이지로 이동
     @GetMapping("/writer")
     public String writer(HttpSession session, Model model){
         User user = (User) session.getAttribute("loginUser");
-        model.addAttribute("id",user.getId());
+        //model.addAttribute("id",user.getId());
+        if (user == null){
+            return "redirect:/users/login";
+        }
         return "boards/writer";
     }
+
+    /**
+     * 글 작성 처리
+     * @param board : 사용자가 입력한 게시글
+//     * @param session : 로그인한 아이디 필요
+     */
 
     @PostMapping("/writer")
     public String writer(Board board){
@@ -66,9 +76,11 @@ public class BoardController {
         return "boards/detail";
     }
 
-
-    @PostMapping("/delete")
-    public String delete(Board board, Model model){
+    //@PathVariable : 주소창(URL)에 있는 값을 가져와야 할 때 사용 (데이터의 위치 즉, 주소)
+    // cf) @RequestParam : 데이터의 조건(옵션)
+    @PostMapping("/{bno}/delete")
+    public String delete(@PathVariable long bno, Model model){
+        Board board = boardService.findById(bno);
         model.addAttribute("board",board);
         boardService.delete(board);
         System.out.println(board.getBno());

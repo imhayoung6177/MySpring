@@ -17,13 +17,13 @@
             <if test="keyword != null and keyword != ''">
                 <choose>
                     <when test="searchType == 'title'">
-                        AND title LIKE CONCAT('%', UPPER(#{keyword}), '%')
+                        AND title LIKE UPPER(CONCAT('%', (#{keyword}), '%'))
                     </when>
                     <when test="searchType == 'content'">
-                        AND content LIKE CONCAT('%', UPPER(#{keyword}), '%')
+                        AND content LIKE UPPER(CONCAT('%', (#{keyword}), '%'))
                     </when>
                     <when test="searchType == 'writer'">
-                        AND writer LIKE CONCAT('%', UPPER(#{keyword}), '%')
+                        AND writer LIKE UPPER(CONCAT('%', (#{keyword}), '%'))
                     </when>
                 </choose>
             </if>
@@ -37,7 +37,7 @@
     </insert>
 
     <select id="findById" parameterType="java.lang.Long" resultType="com.site.domain.Board">
-            SELECT bno, title, content, writer, updateAt FROM board
+            SELECT bno, title, content, writer, createdAt FROM board
             WHERE bno = #{bno}
     </select>
 
