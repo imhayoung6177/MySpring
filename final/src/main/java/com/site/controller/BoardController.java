@@ -60,15 +60,36 @@ public class BoardController {
         Board board = boardService.findById(bno);
         model.addAttribute("board",board);
         User user = (User) session.getAttribute("loginUser");
+        if(user != null){
         model.addAttribute("id",user.getId());
+        }
         return "boards/detail";
     }
 
 
     @PostMapping("/delete")
-    public void delete(Board board){
+    public String delete(Board board, Model model){
+        model.addAttribute("board",board);
         boardService.delete(board);
+        System.out.println(board.getBno());
+        return "redirect:/boards";
+
     }
+
+    @PostMapping("/editForm")
+    public String editBoards(Board board, Model model){
+        model.addAttribute("board",board);
+        return "boards/editBoards";
+    }
+
+    @PostMapping("/editBoard")
+    public String editBoard(Board board, Model model){
+        model.addAttribute("board",board);
+        System.out.println(board.getBno()+" title "+board.getTitle()+"content "+board.getContent());
+        boardService.update(board);
+        return "redirect:/boards";
+    }
+
 
 
 

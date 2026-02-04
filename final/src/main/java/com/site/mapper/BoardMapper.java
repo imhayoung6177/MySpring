@@ -27,4 +27,6 @@ public interface BoardMapper {
     Board findById(long bno);
 
     void delete(Board board);
+
+    void update(Board board);
 }

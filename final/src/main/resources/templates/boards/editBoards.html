@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <title>글 수정</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <h2> 글 수정</h2>
+                <form th:action="@{/boards/editBoard}">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">제목</label>
+                        <input type="text" id="title" name="title" th:value="${board.title}" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="writer" class="form-label">작성자</label>
+                        <input type="text" id="writer" name="writer" th:value="${board.writer}" class="form-control" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">내용</label>
+                        <input type="text" id="content" name="content" th:value="${board.content}" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="createdAt" class="form-label">작성시간</label>
+                        <input type="text" id="createdAt" name="createdAt" th:value="${board.createdAt}" class="form-control" readonly>
+                    </div>
+                    <input type="hidden" id="bno" name="bno" th:value="${board.bno}" >
+                    <button type="submit"> 수정하기 </button>
+                    <button type="submit" th:href="@{/boards}">취소하기</button>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

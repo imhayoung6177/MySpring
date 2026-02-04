@@ -25,10 +25,19 @@
                             <td th:text="${#temporals.format(board.updateAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         </tr>
                     </table>
-
+                    <form th:action="@{/boards/delete}" method="post">
                     <div th:if="${session.loginUser.id == board.writer}">
-                        <button type="submit" th:href="/delete"> 삭제하기 </button>
+                        <input type="hidden" id="bno" th:value="${board.bno}">
+                        <button type="submit"> 삭제하기 </button>
                     </div>
+                    </form>
+
+                    <form th:action="@{/boards/editForm}" method="post">
+                        <div th:if="${session.loginUser.id == board.writer}">
+                            <button type="submit">수정하기</button>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>

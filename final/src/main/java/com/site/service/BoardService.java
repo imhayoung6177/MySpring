@@ -28,4 +28,8 @@ public class BoardService {
     public void delete(Board board) {
         boardMapper.delete(board);
     }
+
+    public void update(Board board) {
+        boardMapper.update(board);
+    }
 }

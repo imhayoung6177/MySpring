@@ -46,4 +46,10 @@
             WHERE bno = #{bno}
     </delete>
 
+    <update id="update" parameterType="com.site.domain.Board">
+            UPDATE board
+            SET title = #{title}, content = #{content}, updateAt = NOW()
+            WHERE bno = #{bno}
+    </update>
+
 </mapper>
