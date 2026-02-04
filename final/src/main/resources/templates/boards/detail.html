@@ -24,7 +24,32 @@
                         <tr>
                             <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         </tr>
+
                     </table>
+                    <!-- 첨부파일이 존재한다면 첨부파일 목록 표시하는 부분
+                     Controller 에서 전달받은 'attachedFiles' 리스트가 비어있지않은경우에만 div블록 화면에 표시
+                     #lists : Thymeleaf에서 제공하는 유틸 객체
+                     -->
+                    <div th:if="${not #lists.isEmpty(attachedFiles)}" class="mb-3">
+                        <strong>첨부파일 : </strong>
+                        <ul>
+                            <!--attachedFiles 리스트를 순회하며 각 파일에 대해 <li>태그를 반복 생성 -->
+                            <li th:each="attachedFile:${attachedFiles}">
+                                <!--
+                                 #strings.endsWithIgnoreCase : Thymeleaf의 문자열 유틸리티를 사용하여 파일 이름이 특징 확장자로 끝나는지 확인(대소문자무시)
+                                 이미지 파일인 경우(jpg,png,gif) 이 블록이 표시
+                                 -->
+                                <div th:if="${#strings.endsWith(attachedFile.original_name,'.jpg') or
+                                    #strings.endsWith(attachedFile.original_name,'.png') or
+                                        #strings.endsWith(attachedFile.original_name,'.gif')}">
+                                    <img th:src="@{/images/{filename}(filename=${attachedFile.stored_name})}" class="img-fluid rounded mb-3" alt="첨부된 파일">
+                                    <!-- 파일 다운로드 링크 -->
+                                    <a th:href="@{/files/download/{fileId}(fileID=${attachedFile.id})}" th:text="${attachedFile.original_name}"></a>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
                     <form th:action="@{/boards/{bno}/delete(bno=${board.bno})}" method="post">
                     <div th:if="${session.loginUser.id == board.writer}">
                         <input type="hidden" id="bno" th:value="${board.bno}">
